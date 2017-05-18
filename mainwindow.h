@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include <tcpconnection.h>
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,8 +17,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private slots:
+    void connectButtonClick();
+
 private:
     Ui::MainWindow *ui;
+    TcpConnection* tcpSocket;
 };
 
 #endif // MAINWINDOW_H
