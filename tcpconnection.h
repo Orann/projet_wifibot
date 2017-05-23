@@ -2,6 +2,7 @@
 #define TCPCONNECTION_H
 
 #include <QTcpSocket>
+#include <QByteArray>
 #include <iostream>
 
 class TcpConnection : public QObject
@@ -12,6 +13,8 @@ public:
     ~TcpConnection();
     void connectTo(QString host, int port);
     void disconnect();
+    void goForward();
+    quint16 crc16(QByteArray buffer);
 
 private:
     QTcpSocket* socket;

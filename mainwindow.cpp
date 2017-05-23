@@ -25,3 +25,7 @@ void MainWindow::on_connectButton_clicked(){
         ui->connectButton->setText("Connect");
     }
 }
+
+void MainWindow::on_forwardButton_clicked(){
+    tcpSocket->goForward()
+}

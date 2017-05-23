@@ -20,6 +20,7 @@ public:
 
 private slots:
     void on_connectButton_clicked();
+    void on_forwardButton_clicked();
 
 private:
     Ui::MainWindow *ui;
