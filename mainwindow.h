@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <iostream>
 
 #include <tcpconnection.h>
 
@@ -18,7 +19,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void connectButtonClick();
+    void on_connectButton_clicked();
 
 private:
     Ui::MainWindow *ui;

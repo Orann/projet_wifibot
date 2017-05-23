@@ -2,17 +2,24 @@
 #define TCPCONNECTION_H
 
 #include <QTcpSocket>
+#include <iostream>
 
-class TcpConnection
+class TcpConnection : public QObject
 {
+Q_OBJECT
 public:
     TcpConnection();
     ~TcpConnection();
-    bool connect(QString host, int port);
+    void connectTo(QString host, int port);
     void disconnect();
 
 private:
     QTcpSocket* socket;
+
+private slots:
+    void connection();
+    void disconnection();
+    void handleError();
 };
 
 #endif // TCPCONNECTION_H

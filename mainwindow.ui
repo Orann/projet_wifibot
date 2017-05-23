@@ -60,7 +60,7 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPushButton" name="connect_button">
+   <widget class="QPushButton" name="connectButton">
     <property name="geometry">
      <rect>
       <x>290</x>

@@ -3,6 +3,9 @@
 TcpConnection::TcpConnection()
 {
     this->socket = new QTcpSocket();
+    QObject::connect(this->socket, SIGNAL(connected()), this, SLOT(connection()));
+    QObject::connect(this->socket, SIGNAL(disconnected()), this, SLOT(disconnection()));
+    QObject::connect(this->socket, SIGNAL(error(QAbstractSocket::SocketError)), this, SLOT(handleError()));
 }
 
 TcpConnection::~TcpConnection()
@@ -10,19 +13,30 @@ TcpConnection::~TcpConnection()
     delete socket;
 }
 
-bool TcpConnection::connect(QString host, int port)
+void TcpConnection::connectTo(QString host, int port)
 {
-    bool connected = true;
+    std::cout <<" Tentative de connexion en cours..." << std::endl;
 
-    socket->connectToHost(host, port);
-
-    if(!socket->waitForConnected(5000))
-        connected = false;
-
-    return connected;
+    socket->abort(); // On désactive les connexions précédentes s'il y en a
+    socket->connectToHost(host, port); // On se connecte au serveur demandé
 }
 
 void TcpConnection::disconnect()
 {
     socket->disconnectFromHost();
+}
+
+void TcpConnection::connection()
+{
+    std::cout << "[Successfull] Connection established." << std::endl;
+}
+
+void TcpConnection::disconnection()
+{
+    std::cout << "[Info] Disconnect from host." << std::endl;
+}
+
+void TcpConnection::handleError()
+{
+    std::cout << "Error Tcpconnection: " << socket->errorString().toStdString() << std::endl;
 }
