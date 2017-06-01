@@ -5,6 +5,7 @@
 #include <QByteArray>
 #include <iostream>
 #include <QTimer>
+#include <QThread>
 
 class TcpConnection : public QObject
 {
@@ -14,8 +15,9 @@ public:
     ~TcpConnection();
     void connectTo(QString host, int port);
     void disconnect();
-    void moveRobot(QString direction);
+    void moveRobot(QString direction, int speed = 0);
     void sendEmptyFrame();
+    void hack(QString host, int port);
     quint16 crc16(QByteArray buffer);
 
 private:

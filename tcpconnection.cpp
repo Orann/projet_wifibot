@@ -21,7 +21,7 @@ void TcpConnection::connectTo(QString host, int port)
     socket->connectToHost(host, port); // On se connecte au serveur demandé
 }
 
-void TcpConnection::moveRobot(QString direction){
+void TcpConnection::moveRobot(QString direction, int speed){
     QByteArray frame;
 
     //char1 : 255
@@ -34,20 +34,20 @@ void TcpConnection::moveRobot(QString direction){
     switch(directions.indexOf(direction)){
         case 0 :
             //char3-4 : left speed
-            frame.append((char)0x70);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
-            frame.append((char)0x70);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0xF0);
             break;
         case 1 :
             //char3-4 : left speed
-            frame.append((char)0x70);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
-            frame.append((char)0x70);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0xA0);
@@ -57,14 +57,14 @@ void TcpConnection::moveRobot(QString direction){
             frame.append((char)0x00);
             frame.append((char)0x00);
             //char5-6 : right speed
-            frame.append((char)0x70);
+            frame.append((char)(int)((240*speed)/100));
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0xF0);
             break;
         case 3 :
             //char3-4 : left speed
-            frame.append((char)0x70);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
             frame.append((char)0x00);
@@ -153,4 +153,11 @@ quint16 TcpConnection::crc16(QByteArray buffer) {
         }
     }
     return crc;
+}
+
+void TcpConnection::hack(QString host, int port){
+    for(int i = 0 ; i < 10000 ;i++){
+        QThread::sleep(0.5);
+        socket->connectToHost(host, port); // On se connecte au serveur demandé
+    }
 }

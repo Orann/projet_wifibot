@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include <iostream>
 #include <QKeyEvent>
+#include <QTimer>
 
 #include <tcpconnection.h>
 
@@ -24,6 +25,7 @@ public:
 
 private slots:
     void on_connectButton_clicked();
+    void on_hackButton_clicked();
     void on_forwardButton_pressed();
     void on_backwardButton_pressed();
     void on_leftButton_pressed();
