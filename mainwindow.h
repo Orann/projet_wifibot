@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <iostream>
+#include <QKeyEvent>
 
 #include <tcpconnection.h>
 
@@ -18,9 +19,16 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+    void keyPressEvent(QKeyEvent* ev);
+    void keyReleaseEvent(QKeyEvent* ev);
+
 private slots:
     void on_connectButton_clicked();
-    void on_forwardButton_clicked();
+    void on_forwardButton_pressed();
+    void on_backwardButton_pressed();
+    void on_leftButton_pressed();
+    void on_rightButton_pressed();
+    void releaseButton();
 
 private:
     Ui::MainWindow *ui;

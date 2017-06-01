@@ -4,6 +4,7 @@
 #include <QTcpSocket>
 #include <QByteArray>
 #include <iostream>
+#include <QTimer>
 
 class TcpConnection : public QObject
 {
@@ -13,15 +14,18 @@ public:
     ~TcpConnection();
     void connectTo(QString host, int port);
     void disconnect();
-    void goForward();
+    void moveRobot(QString direction);
+    void sendEmptyFrame();
     quint16 crc16(QByteArray buffer);
 
 private:
     QTcpSocket* socket;
+    QTimer* timer;
 
 private slots:
     void connection();
     void disconnection();
+    void refreshConnection();
     void handleError();
 };
 

@@ -21,40 +21,70 @@ void TcpConnection::connectTo(QString host, int port)
     socket->connectToHost(host, port); // On se connecte au serveur demandé
 }
 
-void TcpConnection::moveRobot(String direction){
+void TcpConnection::moveRobot(QString direction){
     QByteArray frame;
 
     //char1 : 255
     frame.append((char)0xFF);
     //char2 : size
     frame.append((char)0x07);
-    //char3-4 : left speed
-    frame.apend((char)0x70);
-    frame.apend((char)0x00);
-    //char5-6 : right speed
-    frame.apend((char)0x70);
-    frame.apend((char)0x00);
 
-    //char7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
-    switch(direction){
-        case "forward" :
-            frame.apend((char)0xF0);
+    QStringList directions;
+    directions << "forward" << "backward" << "left" << "right";
+    switch(directions.indexOf(direction)){
+        case 0 :
+            //char3-4 : left speed
+            frame.append((char)0x70);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)0x70);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0xF0);
             break;
-        case "backward" :
-            frame.apend((char)0xA0);
+        case 1 :
+            //char3-4 : left speed
+            frame.append((char)0x70);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)0x70);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0xA0);
             break;
-        case "left" :
-            frame.apend((char)0xC0);
+        case 2 :
+            //char3-4 : left speed
+            frame.append((char)0x00);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)0x70);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0xF0);
             break;
-        case "right" :
-            frame.apend((char)0x30);
+        case 3 :
+            //char3-4 : left speed
+            frame.append((char)0x70);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)0x00);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0xF0);
             break;
         default :
-            frame.apend((char)0xF0);
+            //char3-4 : left speed
+            frame.append((char)0x00);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)0x00);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0x00);
     }
 
     // On détermine le CRC
-    quint16 ValeurCrc = crc16(ba);
+    quint16 ValeurCrc = crc16(frame);
 
     frame.append((char)(ValeurCrc));
     frame.append((char)(ValeurCrc>>8));
@@ -65,17 +95,37 @@ void TcpConnection::moveRobot(String direction){
 
 void TcpConnection::disconnect()
 {
+    moveRobot("stop");
     socket->disconnectFromHost();
 }
 
 void TcpConnection::connection()
 {
     std::cout << "[Successfull] Connection established." << std::endl;
+
+    sendEmptyFrame();
+    this->timer = new QTimer(this);
+    connect(this->timer, SIGNAL(timeout()), this, SLOT(refreshConnection()));
+    timer->setSingleShot(false);
+    timer->start(500);
 }
 
 void TcpConnection::disconnection()
 {
     std::cout << "[Info] Disconnect from host." << std::endl;
+    timer->stop();
+}
+
+void TcpConnection::sendEmptyFrame()
+{
+    QByteArray frame;
+    frame.append(255);
+    this->socket->write(frame);
+}
+
+void TcpConnection::refreshConnection()
+{
+    sendEmptyFrame();
 }
 
 void TcpConnection::handleError()
