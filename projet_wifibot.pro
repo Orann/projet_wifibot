@@ -8,6 +8,7 @@ QT       += core gui
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 QT += network
+QT += webenginewidgets
 
 TARGET = projet_wifibot
 TEMPLATE = app
@@ -15,9 +16,11 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    tcpconnection.cpp
+    tcpconnection.cpp \
+    cameratcpconnection.cpp
 
 HEADERS  += mainwindow.h \
-    tcpconnection.h
+    tcpconnection.h \
+    cameratcpconnection.h
 
 FORMS    += mainwindow.ui

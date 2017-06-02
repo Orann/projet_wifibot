@@ -7,7 +7,11 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     tcpSocket = new TcpConnection();
-    timerCamera = new QTimer(this);
+    //timerCamera = new QTimer(this);
+    QWebEngineView* streamView = new QWebEngineView();
+    ui->gridLayout->addWidget(streamView);
+    streamView->load(QUrl("http://192.168.1.106:8080/?action=stream"));
+    streamView->show();
 
     //Signals :
     connect(ui->forwardButton, SIGNAL(released()), this, SLOT (releaseButton()));
@@ -15,7 +19,7 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->leftButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(ui->rightButton, SIGNAL(released()), this, SLOT (releaseButton()));
 
-    connect(timerCamera, SIGNAL(timeout()), this, SLOT(getCameraImage()));
+    //connect(timerCamera, SIGNAL(timeout()), this, SLOT(getCameraImage()));
 }
 
 MainWindow::~MainWindow()
@@ -65,6 +69,53 @@ void MainWindow::releaseButton(){
     std::cout << "[Info] Stop robot." << std::endl;
 }
 
+void MainWindow::on_camUpButton_clicked(){
+    std::cout << "[Info] Camera robot up." << std::endl;
+    QNetworkRequest request;
+    QNetworkAccessManager* man = new QNetworkAccessManager();
+    request.setUrl(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094853&group=1&value=-200"));
+    man->get(request);
+    man=NULL ; free(man);
+}
+
+void MainWindow::on_camDownButton_clicked(){
+    std::cout << "[Info] Camera robot down." << std::endl;
+    QNetworkRequest request;
+    QNetworkAccessManager* man = new QNetworkAccessManager();
+    request.setUrl(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094853&group=1&value=200"));
+    man->get(request);
+    man=NULL ; free(man);
+}
+
+void MainWindow::on_camLeftButton_clicked(){
+    std::cout << "[Info] Camera robot left." << std::endl;
+    QNetworkRequest request;
+    QNetworkAccessManager* man = new QNetworkAccessManager();
+    request.setUrl(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=200"));
+    man->get(request);
+    man=NULL ; free(man);
+}
+
+void MainWindow::on_camRightButton_clicked(){
+    std::cout << "[Info] Camera robot right." << std::endl;
+    QNetworkRequest request;
+    QNetworkAccessManager* man = new QNetworkAccessManager();
+    request.setUrl(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094852&group=1&value=-200"));
+    man->get(request);
+    man=NULL ; free(man);
+}
+
+void MainWindow::on_camResetButton_clicked(){
+    std::cout << "[Info] Camera robot reset." << std::endl;
+    QNetworkRequest request;
+    QNetworkAccessManager* man = new QNetworkAccessManager();
+
+    request.setUrl(QUrl("http://192.168.1.106:8080/?action=command&dest=0&plugin=0&id=10094855&group=1&value=1"));
+    man->get(request);
+
+    man=NULL ; free(man);
+}
+
 void MainWindow::keyPressEvent(QKeyEvent *ev)
 {
     switch(ev->key()){
@@ -91,4 +142,8 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
 {
     tcpSocket->moveRobot("stop");
     std::cout << "[Info] Stop robot." << std::endl;
+}
+
+void MainWindow::on_speedSlider_valueChanged(){
+    ui->speed_lcdNumber->display(ui->speedSlider->value());
 }

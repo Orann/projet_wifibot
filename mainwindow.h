@@ -5,6 +5,7 @@
 #include <iostream>
 #include <QKeyEvent>
 #include <QTimer>
+#include <QtWebEngineWidgets>
 
 #include <tcpconnection.h>
 
@@ -31,6 +32,12 @@ private slots:
     void on_leftButton_pressed();
     void on_rightButton_pressed();
     void releaseButton();
+    void on_speedSlider_valueChanged();
+    void on_camUpButton_clicked();
+    void on_camDownButton_clicked();
+    void on_camLeftButton_clicked();
+    void on_camRightButton_clicked();
+    void on_camResetButton_clicked();
 
 private:
     Ui::MainWindow *ui;

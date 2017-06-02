@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>441</width>
-    <height>319</height>
+    <width>1033</width>
+    <height>484</height>
    </rect>
   </property>
   <property name="focusPolicy">
@@ -143,14 +143,14 @@
    <widget class="QSlider" name="speedSlider">
     <property name="geometry">
      <rect>
-      <x>130</x>
+      <x>120</x>
       <y>220</y>
       <width>160</width>
       <height>22</height>
      </rect>
     </property>
     <property name="minimum">
-     <number>1</number>
+     <number>0</number>
     </property>
     <property name="maximum">
      <number>100</number>
@@ -175,13 +175,126 @@
      <string>Hack</string>
     </property>
    </widget>
+   <widget class="QLCDNumber" name="speed_lcdNumber">
+    <property name="geometry">
+     <rect>
+      <x>290</x>
+      <y>220</y>
+      <width>64</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="intValue" stdset="0">
+     <number>75</number>
+    </property>
+   </widget>
+   <widget class="QWidget" name="gridWidget" native="true">
+    <property name="geometry">
+     <rect>
+      <x>430</x>
+      <y>110</y>
+      <width>310</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>310</width>
+      <height>240</height>
+     </size>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>310</width>
+      <height>240</height>
+     </size>
+    </property>
+    <layout class="QGridLayout" name="gridLayout"/>
+   </widget>
+   <widget class="QPushButton" name="camUpButton">
+    <property name="geometry">
+     <rect>
+      <x>820</x>
+      <y>120</y>
+      <width>113</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cam forward</string>
+    </property>
+    <property name="autoRepeat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="camRightButton">
+    <property name="geometry">
+     <rect>
+      <x>920</x>
+      <y>160</y>
+      <width>113</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cam right</string>
+    </property>
+    <property name="autoRepeat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="camDownButton">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>210</y>
+      <width>113</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cam backward</string>
+    </property>
+    <property name="autoRepeat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="camLeftButton">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>160</y>
+      <width>113</width>
+      <height>32</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Cam left</string>
+    </property>
+    <property name="autoRepeat">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="camResetButton">
+    <property name="geometry">
+     <rect>
+      <x>860</x>
+      <y>170</y>
+      <width>51</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>RESET</string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>441</width>
+     <width>1033</width>
      <height>22</height>
     </rect>
    </property>
