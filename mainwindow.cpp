@@ -149,5 +149,18 @@ void MainWindow::updateSensorsValues(Sensors s){
     ui->speedL->display(s.getSpeedL());
     ui->speedR->display(s.getSpeedR());
 
-
+    if (s.getBattery() > 18.1 && s.getBattery() < 18.5){
+        ui->battery->setValue(100);
+        ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: blue; }");
+    }
+    else {
+        ui->battery->setValue(floor((s.getBattery()*100)/12.8));
+        if(s.getBattery() > 11.6 && s.getBattery() < 12.1){
+            ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: red; }");
+        } else if(s.getBattery() > 12 && s.getBattery() < 12.5){
+            ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: orange; }");
+        } else if(s.getBattery() > 12.4 && s.getBattery() < 12,9){
+            ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: green; }");
+        }
+    }
 }
