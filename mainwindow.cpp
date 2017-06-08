@@ -7,19 +7,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     tcpSocket = new TcpConnection();
-    //timerCamera = new QTimer(this);
+
+    //Camera :
     QWebEngineView* streamView = new QWebEngineView();
     ui->gridLayout->addWidget(streamView);
     streamView->load(QUrl("http://192.168.1.106:8080/?action=stream"));
     streamView->show();
+
 
     //Signals :
     connect(ui->forwardButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(ui->backwardButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(ui->leftButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(ui->rightButton, SIGNAL(released()), this, SLOT (releaseButton()));
-
-    //connect(timerCamera, SIGNAL(timeout()), this, SLOT(getCameraImage()));
+    connect(tcpSocket, SIGNAL(sensorsValues(Sensors)), this, SLOT(updateSensorsValues(Sensors)));
 }
 
 MainWindow::~MainWindow()
@@ -37,12 +38,6 @@ void MainWindow::on_connectButton_clicked(){
         tcpSocket->disconnect();
         ui->connectButton->setText("Connect");
     }
-}
-
-void MainWindow::on_hackButton_clicked(){
-    bool ok;
-    std::cout << "[Info] Hack robot." << std::endl;
-    tcpSocket->hack(ui->host_edit->text(), ui->port_edit->text().toInt(&ok, 10));
 }
 
 void MainWindow::on_forwardButton_pressed(){
@@ -146,4 +141,13 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
 
 void MainWindow::on_speedSlider_valueChanged(){
     ui->speed_lcdNumber->display(ui->speedSlider->value());
+}
+
+void MainWindow::updateSensorsValues(Sensors s){
+    ui->odoL->display(s.getOdoL());
+    ui->odoR->display(s.getOdoR());
+    ui->speedL->display(s.getSpeedL());
+    ui->speedR->display(s.getSpeedR());
+
+
 }

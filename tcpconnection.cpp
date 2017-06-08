@@ -126,6 +126,7 @@ void TcpConnection::sendEmptyFrame()
 void TcpConnection::refreshConnection()
 {
     sendEmptyFrame();
+    getSensors();
 }
 
 void TcpConnection::handleError()
@@ -155,9 +156,33 @@ quint16 TcpConnection::crc16(QByteArray buffer) {
     return crc;
 }
 
-void TcpConnection::hack(QString host, int port){
-    for(int i = 0 ; i < 10000 ;i++){
-        QThread::sleep(0.5);
-        socket->connectToHost(host, port); // On se connecte au serveur demandé
+void TcpConnection::getSensors(){
+    QByteArray ba = socket->readAll();
+
+    if(ba.size() > 17)
+    {
+        quint32 odoL,odoR;
+        qint16 speedL,speedR;
+        quint8 battery,adc0,adc1,adc3,adc4,current,version;
+
+        // Left
+        speedL = ba.at(0)+(ba.at(1)<<8);
+        battery = ba.at(2);
+        adc4 = ba.at(3);
+        adc3 = ba.at(4);
+        odoL = ba.at(5)+(ba.at(6)<<8)+(ba.at(7)<<16)+(ba.at(8)<<24);
+
+        // Right
+        speedR = ba.at(9)+(ba.at(10)<<8);
+        adc0 = ba.at(11);
+        adc1 = ba.at(12);
+        odoR = ba.at(13)+(ba.at(14)<<8)+(ba.at(15)<<16)+(ba.at(16)<<24);
+        current = ba.at(17);
+        version = ba.at(18);
+
+        //On suppose que la batterie est déchargée à 11.7 V et pleine à 12.8 et et si c'est au dessus, c'est parce qu'il recharge
+        Sensors s = Sensors(odoL, odoR, speedL, speedR, battery, adc0, adc1, adc3, adc4, current, version);
+
+        emit sensorsValues(s);
     }
 }

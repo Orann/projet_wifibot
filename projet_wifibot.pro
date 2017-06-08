@@ -17,10 +17,10 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     tcpconnection.cpp \
-    cameratcpconnection.cpp
+    sensors.cpp
 
 HEADERS  += mainwindow.h \
     tcpconnection.h \
-    cameratcpconnection.h
+    sensors.h
 
 FORMS    += mainwindow.ui

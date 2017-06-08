@@ -7,6 +7,8 @@
 #include <QTimer>
 #include <QThread>
 
+#include <sensors.h>
+
 class TcpConnection : public QObject
 {
 Q_OBJECT
@@ -17,8 +19,8 @@ public:
     void disconnect();
     void moveRobot(QString direction, int speed = 0);
     void sendEmptyFrame();
-    void hack(QString host, int port);
     quint16 crc16(QByteArray buffer);
+    void getSensors();
 
 private:
     QTcpSocket* socket;
@@ -29,6 +31,9 @@ private slots:
     void disconnection();
     void refreshConnection();
     void handleError();
+
+signals:
+    void sensorsValues(Sensors s);
 };
 
 #endif // TCPCONNECTION_H

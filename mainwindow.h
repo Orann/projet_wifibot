@@ -8,6 +8,7 @@
 #include <QtWebEngineWidgets>
 
 #include <tcpconnection.h>
+#include <sensors.h>
 
 namespace Ui {
 class MainWindow;
@@ -26,7 +27,6 @@ public:
 
 private slots:
     void on_connectButton_clicked();
-    void on_hackButton_clicked();
     void on_forwardButton_pressed();
     void on_backwardButton_pressed();
     void on_leftButton_pressed();
@@ -38,6 +38,7 @@ private slots:
     void on_camLeftButton_clicked();
     void on_camRightButton_clicked();
     void on_camResetButton_clicked();
+    void updateSensorsValues(Sensors s);
 
 private:
     Ui::MainWindow *ui;
