@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>backward.png</file>
+        <file>cameradown.png</file>
+        <file>cameraleft.png</file>
+        <file>camerareset.png</file>
+        <file>cameraright.png</file>
+        <file>cameraup.png</file>
+        <file>forward.png</file>
+        <file>left.png</file>
+        <file>next.png</file>
+    </qresource>
+</RCC>

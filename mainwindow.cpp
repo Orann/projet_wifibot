@@ -10,7 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     //Camera :
     QWebEngineView* streamView = new QWebEngineView();
-    ui->gridLayout->addWidget(streamView);
+    ui->gridLayout_6->addWidget(streamView);
     streamView->load(QUrl("http://192.168.1.106:8080/?action=stream"));
     streamView->show();
 
@@ -32,7 +32,7 @@ MainWindow::~MainWindow()
 void MainWindow::on_connectButton_clicked(){
     bool ok;
     if(ui->connectButton->text() == "Connect"){
-        tcpSocket->connectTo(ui->host_edit->text(), ui->port_edit->text().toInt(&ok, 10));
+        tcpSocket->connectTo(ui->hostEdit->text(), ui->portEdit->text().toInt(&ok, 10));
         ui->connectButton->setText("Disconnect");
     } else{
         tcpSocket->disconnect();
@@ -140,7 +140,7 @@ void MainWindow::keyReleaseEvent(QKeyEvent *ev)
 }
 
 void MainWindow::on_speedSlider_valueChanged(){
-    ui->speed_lcdNumber->display(ui->speedSlider->value());
+    ui->speedLCD->display(ui->speedSlider->value());
 }
 
 void MainWindow::updateSensorsValues(Sensors s){

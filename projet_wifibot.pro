@@ -24,3 +24,8 @@ HEADERS  += mainwindow.h \
     sensors.h
 
 FORMS    += mainwindow.ui
+
+DISTFILES +=
+
+RESOURCES += \
+    ressources.qrc
