@@ -9,7 +9,7 @@ MainWindow::MainWindow(QWidget *parent) :
     tcpSocket = new TcpConnection();
 
     //Camera :
-    QWebEngineView* streamView = new QWebEngineView();
+    streamView = new QWebEngineView();
     ui->gridLayout_6->addWidget(streamView);
     streamView->load(QUrl("http://192.168.1.106:8080/?action=stream"));
     streamView->show();
@@ -20,6 +20,11 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(ui->backwardButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(ui->leftButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(ui->rightButton, SIGNAL(released()), this, SLOT (releaseButton()));
+    connect(ui->forwardLeftButton, SIGNAL(released()), this, SLOT (releaseButton()));
+    connect(ui->forwardRightButton, SIGNAL(released()), this, SLOT (releaseButton()));
+    connect(ui->backwardLeftButton, SIGNAL(released()), this, SLOT (releaseButton()));
+    connect(ui->backwardRightButton, SIGNAL(released()), this, SLOT (releaseButton()));
+    connect(ui->turnAwayButton, SIGNAL(released()), this, SLOT (releaseButton()));
     connect(tcpSocket, SIGNAL(sensorsValues(Sensors)), this, SLOT(updateSensorsValues(Sensors)));
 }
 
@@ -80,7 +85,7 @@ void MainWindow::on_backwardRightButton_pressed(){
     std::cout << "[Info] Robot go backward right." << std::endl;
 }
 
-void MainWindow::on_turnawayButton_pressed(){
+void MainWindow::on_turnAwayButton_pressed(){
     tcpSocket->moveRobot("turnaway", ui->speedSlider->value());
     std::cout << "[Info] Robot turnaway." << std::endl;
 }
@@ -137,60 +142,47 @@ void MainWindow::on_camResetButton_clicked(){
     man=NULL ; free(man);
 }
 
-bool MainWindow::eventFilter(QObject *watched, QEvent *event){
-    if(event->type()==QEvent::KeyPress){
+void MainWindow::on_filter1Button_clicked(){
+    streamView->page()->runJavaScript("var filtres = document.body.firstChild.style.webkitFilter; document.body.firstChild.style.webkitFilter = filtres+' grayscale(100%)';");
+}
 
-        pressedKey += ((QKeyEvent*)event)->key();
+void MainWindow::on_filter2Button_clicked(){
+    streamView->page()->runJavaScript("var filtres = document.body.firstChild.style.webkitFilter; document.body.firstChild.style.webkitFilter = filtres+' invert(100%)';");
 
-        if(pressedKey.contains(Qt::Key_Up) && pressedKey.contains(Qt::Key_Left)){
-            tcpSocket->moveRobot("forwardLeft", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
+}
 
-        else if(pressedKey.contains(Qt::Key_Up) && pressedKey.contains(Qt::Key_Right)){
-            tcpSocket->moveRobot("forwardRight", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
+void MainWindow::on_filter3Button_clicked(){
+    streamView->page()->runJavaScript("var filtres = document.body.firstChild.style.webkitFilter; document.body.firstChild.style.webkitFilter = filtres+' sepia(100%)';");
+}
 
-        else if(pressedKey.contains(Qt::Key_Up)){
-            tcpSocket->moveRobot("forward", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
+void MainWindow::on_resetFilterButton_clicked(){
+    streamView->page()->runJavaScript("document.body.firstChild.style.webkitFilter = ''");
+}
 
-        else if(pressedKey.contains(Qt::Key_Down) && pressedKey.contains(Qt::Key_Left)){
-            tcpSocket->moveRobot("backawardLeft", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
-
-        else if(pressedKey.contains(Qt::Key_Down) && pressedKey.contains(Qt::Key_Right)){
-            tcpSocket->moveRobot("backawardRight", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
-
-        else if(pressedKey.contains(Qt::Key_Down)){
-            tcpSocket->moveRobot("backaward", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
-
-        else if(pressedKey.contains(Qt::Key_Right)){
-            tcpSocket->moveRobot("right", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
-
-        else if(pressedKey.contains(Qt::Key_Left)){
-            tcpSocket->moveRobot("left", ui->speedSlider->value());
-            std::cout << "[Info] Robot go forward." << std::endl;
-        }
+void MainWindow::keyPressEvent(QKeyEvent *ev){
+    switch(ev->key()){
+    case Qt::Key_Up:
+        tcpSocket->moveRobot("forward", ui->speedSlider->value());
+        std::cout << "[Info] Robot go forward." << std::endl;
+        break;
+    case Qt::Key_Down:
+        tcpSocket->moveRobot("backward", ui->speedSlider->value());
+        std::cout << "[Info] Robot go backward." << std::endl;
+        break;
+    case Qt::Key_Left:
+        tcpSocket->moveRobot("left", ui->speedSlider->value());
+        std::cout << "[Info] Robot go to the left." << std::endl;
+        break;
+    case Qt::Key_Right:
+        tcpSocket->moveRobot("right", ui->speedSlider->value());
+        std::cout << "[Info] Robot go to the right." << std::endl;
+        break;
     }
+}
 
-    if(event->type()==QEvent::KeyRelease){
-        int releasedKey = ((QKeyEvent*)event)->key();
-        if(releasedKey==Qt::Key_Z || releasedKey==Qt::Key_Q || releasedKey==Qt::Key_S || releasedKey==Qt::Key_D){
-            tcpSocket->moveRobot("stop");
-            std::cout << "[Info] Stop robot." << std::endl;
-        }
-        pressedKey -= ((QKeyEvent*)event)->key();
-    }
+void MainWindow::keyReleaseEvent(QKeyEvent *ev){
+    tcpSocket->moveRobot("stop");
+    std::cout << "[Info] Stop robot." << std::endl;
 }
 
 void MainWindow::on_speedSlider_valueChanged(){
@@ -208,8 +200,8 @@ void MainWindow::updateSensorsValues(Sensors s){
         ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: blue; }");
     }
     else {
-        ui->battery->setValue(floor((s.getBattery()*100)/12.8));
-        if(s.getBattery() > 11.6 && s.getBattery() < 12.1){
+        ui->battery->setValue(floor(((s.getBattery()-11.3)*100)/12.8));
+        if(s.getBattery() > 11.3 && s.getBattery() < 12.1){
             ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: red; }");
         } else if(s.getBattery() > 12 && s.getBattery() < 12.5){
             ui->battery->setStyleSheet(ui->battery->property("defaultStyleSheet").toString() + " QProgressBar::chunk { background: orange; }");

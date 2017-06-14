@@ -30,7 +30,7 @@ void TcpConnection::moveRobot(QString direction, int speed){
     frame.append((char)0x07);
 
     QStringList directions;
-    directions << "forward" << "backward" << "left" << "right" << "topLeft" << "topRight" << "bottomLeft" << "bottomRight" << "turnaway";
+    directions << "forward" << "backward" << "left" << "right" << "forwardLeft" << "forwardRight" << "backwardLeft" << "backwardRight" << "turnaway";
     switch(directions.indexOf(direction)){
         case 0 : //forward
             //char3-4 : left speed
@@ -74,7 +74,7 @@ void TcpConnection::moveRobot(QString direction, int speed){
             break;
         case 4 :
             //char3-4 : left speed
-            frame.append((char)0x78);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
             frame.append((char)((int)(240*speed)/100));
@@ -87,14 +87,14 @@ void TcpConnection::moveRobot(QString direction, int speed){
             frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
-            frame.append(0x78);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0x50);
             break;
         case 6 :
             //char3-4 : left speed
-            frame.append(0x78);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
             frame.append((char)((int)(240*speed)/100));
@@ -107,20 +107,20 @@ void TcpConnection::moveRobot(QString direction, int speed){
             frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
-            frame.append(0x78);
+            frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0x00);
             break;
         case 8 :
             //char3-4 : left speed
-            frame.append((char)((int)(240*speed)/100));
+            frame.append((char)(int)((240*speed)/100));
             frame.append((char)0x00);
             //char5-6 : right speed
-            frame.append(0x78);
+            frame.append((char)(int)((240*speed)/100));
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
-            frame.append((char)0x00);
+            frame.append((char)0xB0);
             break;
         default :
             //char3-4 : left speed
@@ -230,7 +230,7 @@ void TcpConnection::getSensors(){
         current = ba.at(17);
         version = ba.at(18);
 
-        //On suppose que la batterie est déchargée à 11.7 V et pleine à 12.8 et et si c'est au dessus, c'est parce qu'il recharge
+        //On suppose que la batterie est déchargée à 11.3V et pleine à 12.8 et et si c'est au dessus, c'est parce qu'il recharge
         Sensors s = Sensors(odoL, odoR, speedL, speedR, battery, adc0, adc1, adc3, adc4, current, version);
 
         emit sensorsValues(s);
