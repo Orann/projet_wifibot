@@ -9,5 +9,10 @@
         <file>forward.png</file>
         <file>left.png</file>
         <file>next.png</file>
+        <file>undo.png</file>
+        <file>right_forward.png</file>
+        <file>right_backward.png</file>
+        <file>left_backward.png</file>
+        <file>left_forward.png</file>
     </qresource>
 </RCC>

@@ -204,12 +204,22 @@ border:none;
      <item row="3" column="0" rowspan="3" colspan="3">
       <layout class="QGridLayout" name="gridLayout">
        <item row="4" column="2">
-        <widget class="QPushButton" name="pushButton_13">
+        <widget class="QPushButton" name="backwardRightButton">
          <property name="styleSheet">
           <string notr="true">border: none;</string>
          </property>
          <property name="text">
-          <string>RIGHT</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressources.qrc">
+           <normaloff>:/right_backward.png</normaloff>:/right_backward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>70</width>
+           <height>70</height>
+          </size>
          </property>
          <property name="autoRepeat">
           <bool>false</bool>
@@ -217,39 +227,42 @@ border:none;
         </widget>
        </item>
        <item row="2" column="1">
-        <widget class="QPushButton" name="pushButton_9">
+        <widget class="QPushButton" name="turnAwayButton">
          <property name="styleSheet">
           <string notr="true">border: none;</string>
          </property>
          <property name="text">
-          <string>TURN AWAY</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QPushButton" name="pushButton_11">
-         <property name="styleSheet">
-          <string notr="true">border: none;</string>
-         </property>
-         <property name="text">
-          <string>LEFT</string>
+          <string/>
          </property>
          <property name="icon">
-          <iconset theme="next.png">
-           <normaloff>.</normaloff>.</iconset>
+          <iconset resource="ressources.qrc">
+           <normaloff>:/undo.png</normaloff>:/undo.png</iconset>
          </property>
-         <property name="autoRepeat">
-          <bool>false</bool>
+         <property name="iconSize">
+          <size>
+           <width>50</width>
+           <height>50</height>
+          </size>
          </property>
         </widget>
        </item>
        <item row="0" column="2">
-        <widget class="QPushButton" name="pushButton_12">
+        <widget class="QPushButton" name="forwardRightButton">
          <property name="styleSheet">
           <string notr="true">border: none;</string>
          </property>
          <property name="text">
-          <string>RIGHT</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressources.qrc">
+           <normaloff>:/right_forward.png</normaloff>:/right_forward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>70</width>
+           <height>70</height>
+          </size>
          </property>
          <property name="autoRepeat">
           <bool>false</bool>
@@ -357,15 +370,45 @@ border:none;
         </widget>
        </item>
        <item row="4" column="0">
-        <widget class="QPushButton" name="pushButton_3">
+        <widget class="QPushButton" name="backwardLeftButton">
          <property name="styleSheet">
           <string notr="true">border: none;</string>
          </property>
          <property name="text">
-          <string>LEFT</string>
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressources.qrc">
+           <normaloff>:/left_backward.png</normaloff>:/left_backward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>70</width>
+           <height>70</height>
+          </size>
          </property>
          <property name="autoRepeat">
           <bool>false</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="forwardLeftButton">
+         <property name="styleSheet">
+          <string notr="true">border: none;</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset resource="ressources.qrc">
+           <normaloff>:/left_forward.png</normaloff>:/left_forward.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>70</width>
+           <height>70</height>
+          </size>
          </property>
         </widget>
        </item>
@@ -451,19 +494,6 @@ border: none;</string>
      </item>
      <item row="3" column="0" rowspan="3" colspan="3">
       <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <spacer name="horizontalSpacer_7">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
        <item row="1" column="0">
         <widget class="QPushButton" name="camLeftButton">
          <property name="styleSheet">
@@ -486,19 +516,6 @@ border: none;</string>
           <bool>true</bool>
          </property>
         </widget>
-       </item>
-       <item row="0" column="2">
-        <spacer name="horizontalSpacer_8">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="1" column="2">
         <widget class="QPushButton" name="camRightButton">
@@ -586,6 +603,46 @@ border: none;</string>
            <width>30</width>
            <height>30</height>
           </size>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="filter1Button">
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid rgb(215, 218, 218);</string>
+         </property>
+         <property name="text">
+          <string>Filter 1</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QPushButton" name="filter2Button">
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid rgb(215, 218, 218);</string>
+         </property>
+         <property name="text">
+          <string>Filter 2</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="0">
+        <widget class="QPushButton" name="filter3Button">
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid rgb(215, 218, 218);</string>
+         </property>
+         <property name="text">
+          <string>Filter 3</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QPushButton" name="resetFilterButton">
+         <property name="styleSheet">
+          <string notr="true">border: 1px solid rgb(215, 218, 218);</string>
+         </property>
+         <property name="text">
+          <string>Reset Filter</string>
          </property>
         </widget>
        </item>
