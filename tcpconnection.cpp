@@ -30,9 +30,9 @@ void TcpConnection::moveRobot(QString direction, int speed){
     frame.append((char)0x07);
 
     QStringList directions;
-    directions << "forward" << "backward" << "left" << "right";
+    directions << "forward" << "backward" << "left" << "right" << "topLeft" << "topRight" << "bottomLeft" << "bottomRight" << "turnaway";
     switch(directions.indexOf(direction)){
-        case 0 :
+        case 0 : //forward
             //char3-4 : left speed
             frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
@@ -42,7 +42,7 @@ void TcpConnection::moveRobot(QString direction, int speed){
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0xF0);
             break;
-        case 1 :
+        case 1 : //backard... idem for the other case
             //char3-4 : left speed
             frame.append((char)((int)(240*speed)/100));
             frame.append((char)0x00);
@@ -71,6 +71,56 @@ void TcpConnection::moveRobot(QString direction, int speed){
             frame.append((char)0x00);
             //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
             frame.append((char)0xF0);
+            break;
+        case 4 :
+            //char3-4 : left speed
+            frame.append((char)0x78);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)((int)(240*speed)/100));
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0x50);
+            break;
+        case 5 :
+            //char3-4 : left speed
+            frame.append((char)((int)(240*speed)/100));
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append(0x78);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0x50);
+            break;
+        case 6 :
+            //char3-4 : left speed
+            frame.append(0x78);
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append((char)((int)(240*speed)/100));
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0x00);
+            break;
+        case 7 :
+            //char3-4 : left speed
+            frame.append((char)((int)(240*speed)/100));
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append(0x78);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0x00);
+            break;
+        case 8 :
+            //char3-4 : left speed
+            frame.append((char)((int)(240*speed)/100));
+            frame.append((char)0x00);
+            //char5-6 : right speed
+            frame.append(0x78);
+            frame.append((char)0x00);
+            //char 7 : is the Left / Right speed command flag : Forward / Backward and speed control left & right ON/OFF.
+            frame.append((char)0x00);
             break;
         default :
             //char3-4 : left speed

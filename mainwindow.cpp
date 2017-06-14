@@ -59,6 +59,32 @@ void MainWindow::on_rightButton_pressed(){
     tcpSocket->moveRobot("right", ui->speedSlider->value());
     std::cout << "[Info] Robot go to the right." << std::endl;
 }
+
+void MainWindow::on_forwardLeftButton_pressed(){
+    tcpSocket->moveRobot("forwardLeft", ui->speedSlider->value());
+    std::cout << "[Info] Robot go forward left." << std::endl;
+}
+
+void MainWindow::on_forwardRightButton_pressed(){
+    tcpSocket->moveRobot("forwardRight", ui->speedSlider->value());
+    std::cout << "[Info] Robot go forward right." << std::endl;
+}
+
+void MainWindow::on_backwardLeftButton_pressed(){
+    tcpSocket->moveRobot("backwardLeft", ui->speedSlider->value());
+    std::cout << "[Info] Robot go to backward left." << std::endl;
+}
+
+void MainWindow::on_backwardRightButton_pressed(){
+    tcpSocket->moveRobot("backwardRight", ui->speedSlider->value());
+    std::cout << "[Info] Robot go backward right." << std::endl;
+}
+
+void MainWindow::on_turnawayButton_pressed(){
+    tcpSocket->moveRobot("turnaway", ui->speedSlider->value());
+    std::cout << "[Info] Robot turnaway." << std::endl;
+}
+
 void MainWindow::releaseButton(){
     tcpSocket->moveRobot("stop");
     std::cout << "[Info] Stop robot." << std::endl;
@@ -111,32 +137,60 @@ void MainWindow::on_camResetButton_clicked(){
     man=NULL ; free(man);
 }
 
-void MainWindow::keyPressEvent(QKeyEvent *ev)
-{
-    switch(ev->key()){
-    case Qt::Key_Up:
-        tcpSocket->moveRobot("forward", ui->speedSlider->value());
-        std::cout << "[Info] Robot go forward." << std::endl;
-        break;
-    case Qt::Key_Down:
-        tcpSocket->moveRobot("backward", ui->speedSlider->value());
-        std::cout << "[Info] Robot go backward." << std::endl;
-        break;
-    case Qt::Key_Left:
-        tcpSocket->moveRobot("left", ui->speedSlider->value());
-        std::cout << "[Info] Robot go to the left." << std::endl;
-        break;
-    case Qt::Key_Right:
-        tcpSocket->moveRobot("right", ui->speedSlider->value());
-        std::cout << "[Info] Robot go to the right." << std::endl;
-        break;
-    }
-}
+bool MainWindow::eventFilter(QObject *watched, QEvent *event){
+    if(event->type()==QEvent::KeyPress){
 
-void MainWindow::keyReleaseEvent(QKeyEvent *ev)
-{
-    tcpSocket->moveRobot("stop");
-    std::cout << "[Info] Stop robot." << std::endl;
+        pressedKey += ((QKeyEvent*)event)->key();
+
+        if(pressedKey.contains(Qt::Key_Up) && pressedKey.contains(Qt::Key_Left)){
+            tcpSocket->moveRobot("forwardLeft", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Up) && pressedKey.contains(Qt::Key_Right)){
+            tcpSocket->moveRobot("forwardRight", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Up)){
+            tcpSocket->moveRobot("forward", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Down) && pressedKey.contains(Qt::Key_Left)){
+            tcpSocket->moveRobot("backawardLeft", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Down) && pressedKey.contains(Qt::Key_Right)){
+            tcpSocket->moveRobot("backawardRight", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Down)){
+            tcpSocket->moveRobot("backaward", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Right)){
+            tcpSocket->moveRobot("right", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+
+        else if(pressedKey.contains(Qt::Key_Left)){
+            tcpSocket->moveRobot("left", ui->speedSlider->value());
+            std::cout << "[Info] Robot go forward." << std::endl;
+        }
+    }
+
+    if(event->type()==QEvent::KeyRelease){
+        int releasedKey = ((QKeyEvent*)event)->key();
+        if(releasedKey==Qt::Key_Z || releasedKey==Qt::Key_Q || releasedKey==Qt::Key_S || releasedKey==Qt::Key_D){
+            tcpSocket->moveRobot("stop");
+            std::cout << "[Info] Stop robot." << std::endl;
+        }
+        pressedKey -= ((QKeyEvent*)event)->key();
+    }
 }
 
 void MainWindow::on_speedSlider_valueChanged(){
